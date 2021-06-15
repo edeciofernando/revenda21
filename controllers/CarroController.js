@@ -13,7 +13,7 @@ module.exports = {
     //   .orderBy("carros.id", "desc");
 
     const carros = await knex
-      .select("c.id", "c.modelo", "m.nome as marca", "c.ano", "c.preco", "c.foto")
+      .select("c.id", "c.modelo", "m.nome as marca", "c.ano", "c.preco", "c.foto", "c.destaque")
       .from("carros as c")
       .leftJoin("marcas as m", "c.marca_id", "m.id")
       .orderBy("c.id", "desc");

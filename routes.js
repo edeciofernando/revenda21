@@ -12,7 +12,8 @@ const login = require("./middleware/login");
 routes.get("/marcas", MarcaController.index);
 
 routes.get("/carros", CarroController.index)
-      .post("/carros", CarroController.store);
+      .post("/carros", CarroController.store)
+      .get("/carros/destaque/:id", CarroController.destaque)
 
 routes.get("/usuarios", UsuarioController.index)
       .post("/usuarios", UsuarioController.store)

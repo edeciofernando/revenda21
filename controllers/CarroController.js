@@ -54,4 +54,31 @@ module.exports = {
       res.status(400).json({ erro: error.message });
     }
   },
+  
+  async destaque(req, res) {
+    const id = req.params.id; // ou:  const { id } = req.params
+    dados = await knex("carros").where({ id });
+    console.log(dados[0]);
+
+    if (dados[0].destaque) {
+      try {
+        await knex("carros").update({ destaque: 0 }).where({ id });
+        res.status(200).json({ ok: 1 });
+      } catch (error) {
+        res
+          .status(400)
+          .json({ ok: 0, msg: `Erro na alteração: ${error.message}` });
+      }
+    } else {
+      try {
+        await knex("carros").update({ destaque: 1 }).where({ id });
+        res.status(200).json({ ok: 1 });
+      } catch (error) {
+        res
+          .status(400)
+          .json({ ok: 0, msg: `Erro na alteração: ${error.message}` });
+      }
+    }
+  },
+  
 };

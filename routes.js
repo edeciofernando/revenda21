@@ -14,6 +14,8 @@ routes.get("/marcas", MarcaController.index);
 routes.get("/carros", CarroController.index)
       .post("/carros", CarroController.store)
       .put("/carros/destaque/:id", CarroController.destaque)
+      .get("/carros/destaques", CarroController.destaques)
+      .delete("/carros/:id", CarroController.destroy)
 
 routes.get("/usuarios", UsuarioController.index)
       .post("/usuarios", UsuarioController.store)

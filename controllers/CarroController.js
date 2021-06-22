@@ -81,4 +81,24 @@ module.exports = {
     }
   },
   
+  async destaques(req, res) {
+    const carros = await knex
+      .select("c.id", "c.modelo", "m.nome as marca", "c.ano", "c.preco", "c.foto", "c.destaque")
+      .from("carros as c")
+      .leftJoin("marcas as m", "c.marca_id", "m.id")
+      .where("c.destaque", true)
+      .orderBy("c.id", "desc");
+    res.status(200).json(carros);
+  },
+  
+  async destroy(req, res) {
+    const id = req.params.id; // ou:  const { id } = req.params
+    try {
+      await knex("carros").del().where({ id });
+      res.status(200).json({ ok: 1 });
+    } catch (error) {
+      res.status(400).json({ ok: 0, msg: `Erro na exclusão: ${error.message}` });
+    }
+  },
+    
 };

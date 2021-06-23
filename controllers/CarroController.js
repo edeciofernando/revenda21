@@ -20,6 +20,30 @@ module.exports = {
     res.status(200).json(carros);
   },
 
+  async show(req, res) {
+    const id = req.params.id; // ou:  const { id } = req.params
+
+    const carro = await knex
+      .select("c.id", "c.modelo", "c.marca_id", "m.nome as marca", "c.ano", "c.preco", "c.foto", "c.destaque")
+      .from("carros as c")
+      .leftJoin("marcas as m", "c.marca_id", "m.id")
+      .where("c.id", id)
+    res.status(200).json(carro[0]);
+  },
+
+  async search(req, res) {
+    const palavra = req.params.palavra; 
+
+    const carros = await knex
+      .select("c.id", "c.modelo", "m.nome as marca", "c.ano", "c.preco", "c.foto", "c.destaque")
+      .from("carros as c")
+      .leftJoin("marcas as m", "c.marca_id", "m.id")
+      .where("modelo", "like", "%"+palavra+"%")
+      .orWhere("m.nome", "like", "%"+palavra+"%")
+      .orderBy("c.id", "desc");
+    res.status(200).json(carros);
+  },
+
   async store(req, res) {
     console.log(req.body)
 
@@ -58,7 +82,7 @@ module.exports = {
   async destaque(req, res) {
     const id = req.params.id; // ou:  const { id } = req.params
     dados = await knex("carros").where({ id });
-    console.log(dados[0]);
+//    console.log(dados[0]);
 
     if (dados[0].destaque) {
       try {
